@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const userRouter = require("./routes/user.route.js");
 
 const app = express();
 dotenv.config();
@@ -13,3 +14,5 @@ mongoose
 app.listen(3000, () => {
   console.log("Server is running on the port 3000");
 });
+
+app.use("/server/user", userRouter);
