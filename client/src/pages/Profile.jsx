@@ -18,7 +18,7 @@ const Profile = () => {
   }, [file]);
 
   const handleFileUpload = (file) => {
-    const fileName = new Date().getTime + file.name;
+    const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -40,20 +40,6 @@ const Profile = () => {
         );
       }
     );
-
-    // uploadTask.on("state_changed", (snapshot) => {
-    //   const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //   setFilePercent(Math.round(progress));
-    // }),
-    //   (error) => {
-    //     setIsFileUploadErr(true);
-    //     return error;
-    //   },
-    //   () => {
-    //     getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-    //       setFormData({ ...formData, avatar: downloadUrl });
-    //     });
-    //   };
   };
 
   return (
