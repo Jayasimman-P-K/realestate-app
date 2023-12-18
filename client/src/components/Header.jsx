@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header className="bg-slate-200 shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
-        <h1 className="font-bold text-sm sm:text-xl">
+        <h1 className="font-bold text-sm sm:text-xl uppercase cursor-pointer">
           <span className="text-slate-500">Madurai</span>
           <span className="text-slate-700">Estate</span>
         </h1>
