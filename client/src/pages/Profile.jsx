@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase/firebase";
 import {
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
@@ -77,13 +80,27 @@ const Profile = () => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/server/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
   return (
-    <div className="">
+    <div className=" max-w-lg mx-auto p-3">
       <h1 className="text-center text-3xl my-7 font-semibold">Profile</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col max-w-lg mx-auto gap-4 px-3"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type="file"
@@ -138,17 +155,25 @@ const Profile = () => {
         <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
           {isLoading ? "Loading..." : "update"}
         </button>
-        <p className=" text-red-700 font-semibold">{error ? error : ""}</p>
-        <p className=" text-green-700 font-semibold">
-          {updateSuccess ? "User is Updated Successfully" : ""}
-        </p>
-        <div className="flex justify-between text-red-700">
-          <button className="cursor-pointer font-semibold">Sign Out</button>
-          <button className="cursor-pointer font-semibold">
-            Delete Account
-          </button>
-        </div>
+        {error ? <p className=" text-red-700 font-semibold">{error}</p> : ""}
+
+        {updateSuccess ? (
+          <p className=" text-green-700 font-semibold">
+            User is Updated Successfully
+          </p>
+        ) : (
+          ""
+        )}
       </form>
+      <div className="flex justify-between text-red-700 py-3">
+        <button
+          onClick={handleDeleteUser}
+          className="cursor-pointer font-semibold"
+        >
+          Delete Account
+        </button>
+        <button className="cursor-pointer font-semibold">Sign Out</button>
+      </div>
     </div>
   );
 };
