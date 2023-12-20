@@ -13,6 +13,7 @@ import {
   updateUserStart,
   updateUserSuccess,
 } from "../redux/user/userSlice";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -173,6 +174,11 @@ const Profile = () => {
         <button className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
           {isLoading ? "Loading..." : "update"}
         </button>
+        <Link to={"/create-listing"}>
+          <button className="bg-green-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80 w-full">
+            Create Listing
+          </button>
+        </Link>
         {error ? <p className=" text-red-700 font-semibold">{error}</p> : ""}
 
         {updateSuccess ? (
