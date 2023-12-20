@@ -5,6 +5,6 @@ const { createListing } = require("../controller/listing.controller");
 // init router
 const router = express.Router();
 
-router.get("/create", verifyToken, createListing);
+router.post("/create", verifyToken, createListing);
 
 module.exports = router;
