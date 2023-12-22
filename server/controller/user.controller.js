@@ -3,10 +3,6 @@ const User = require("../models/user.model");
 const { errorHandler } = require("../utils/error");
 const bcryptjs = require("bcryptjs");
 
-module.exports.test = (req, res) => {
-  res.json({ message: "test message" });
-};
-
 module.exports.updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can not update this account!!"));
@@ -56,5 +52,16 @@ module.exports.getUserListings = async (req, res, next) => {
     }
   } else {
     return next(errorHandler(401, "You don't have access for this account"));
+  }
+};
+
+module.exports.getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(errorHandler(404, "User not found"));
+    const { password: pass, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
   }
 };
